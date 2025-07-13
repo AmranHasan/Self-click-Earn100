@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Monetag Earning Bot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 95%;
+      margin: 50px auto;
+      background: #1e293b;
+      padding: 25px 15px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+    }
+
+    h2 {
+      color: #38bdf8;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      background: #38bdf8;
+      color: #0f172a;
+      padding: 12px 25px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+      max-width: 250px;
+    }
+
+    .btn:hover {
+      background: #0ea5e9;
+    }
+
+    #timer {
+      font-size: 22px;
+      margin-top: 20px;
+      display: none;
+      color: #facc15;
+    }
+
+    #message {
+      font-size: 20px;
+      margin-top: 20px;
+      color: #22c55e;
+      display: none;
+    }
+
+    .balance {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #7dd3fc;
+    }
+
+    .ad-box {
+      margin-top: 20px;
+      padding: 10px;
+      background: #0f172a;
+      border: 2px dashed #38bdf8;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 18px;
+      }
+      .btn {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+      #timer {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>💰 Monetag Earning Bot</h2>
+    <div class="balance">Your Balance: <span id="balance">0</span> Points</div>
+    <button class="btn" onclick="startAd()">▶️ Play & Earn</button>
+
+    <div id="timer">⏳ Please wait: <span id="countdown">15</span>s</div>
+    <div class="ad-box" id="adContainer">
+      <!-- Ad will be shown here -->
+    </div>
+    <div id="message">✅ Ad viewed successfully! +10 Points</div>
+  </div>
+
+  <!-- Monetag Script -->
+  <script src='//libtl.com/sdk.js' data-zone='9558623' data-sdk='show_9558623'></script>
+
+  <script>
+    let points = localStorage.getItem("points") || 0;
+    document.getElementById("balance").innerText = points;
+
+    function startAd() {
+      document.getElementById('message').style.display = 'none';
+      document.getElementById('timer').style.display = 'block';
+      document.getElementById('countdown').innerText = '15';
+
+      // Show Ad
+      if (typeof show_9558623 === "function") {
+        show_9558623();
+      } else {
+        document.getElementById('adContainer').innerHTML = "<p style='color:red;'>❌ Ad failed to load. Try again.</p>";
+        return;
+      }
+
+      let timeLeft = 15;
+      let timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('countdown').innerText = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          document.getElementById('timer').style.display = 'none';
+          document.getElementById('message').style.display = 'block';
+
+          // Update Balance
+          points = parseInt(points) + 10;
+          localStorage.setItem("points", points);
+          document.getElementById("balance").innerText = points;
+        }
+      }, 1000);
+    }
+  </script>
+
+</body>
+</html>
